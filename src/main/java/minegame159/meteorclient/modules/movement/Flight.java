@@ -51,6 +51,13 @@ public class Flight extends Module {
             .build()
     );
 
+    private final Setting<Boolean> negateSneakSlowness = sgGeneral.add(new BoolSetting.Builder()
+            .name("negate-sneak-slowdown")
+            .description("Stops sneaking to descend from slowing down the player.")
+            .defaultValue(false)
+            .build()
+    );
+
     // Anti Kick
 
     private final Setting<AntiKickMode> antiKickMode = sgAntiKick.add(new EnumSetting.Builder<AntiKickMode>()
@@ -151,7 +158,7 @@ public class Flight extends Module {
                 you get when using vanilla fly*/
 
                 mc.player.abilities.flying = false;
-                mc.player.flyingSpeed = speed.get().floatValue() * (mc.player.isSprinting() ? 15f : 10f);
+                mc.player.flyingSpeed = speed.get().floatValue() * (mc.player.isSprinting() ? 15f : !mc.player.isSneaking() ? 10f : this.negateSneakSlowness.get() ? 40f : 10f);
 
                 mc.player.setVelocity(0, 0, 0);
                 Vec3d initialVelocity = mc.player.getVelocity();
