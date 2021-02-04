@@ -21,13 +21,11 @@ public class Flight extends Module {
         Abilities,
         Velocity
     }
-
     public enum AntiKickMode {
         Normal,
         Packet,
         None
     }
-
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final SettingGroup sgAntiKick = settings.createGroup("Anti Kick"); //Pog
 
@@ -43,6 +41,13 @@ public class Flight extends Module {
             .description("Your speed when flying.")
             .defaultValue(0.1)
             .min(0.0)
+            .build()
+    );
+
+    private final Setting<Boolean> verticalSpeedMatch = sgGeneral.add(new BoolSetting.Builder()
+            .name("vert-speed-match")
+            .description("Make vertical speed equivalent to horizontal speed.")
+            .defaultValue(false)
             .build()
     );
 
@@ -151,8 +156,8 @@ public class Flight extends Module {
                 mc.player.setVelocity(0, 0, 0);
                 Vec3d initialVelocity = mc.player.getVelocity();
 
-                if (mc.options.keyJump.isPressed()) mc.player.setVelocity(initialVelocity.add(0, speed.get() * 5f, 0));
-                if (mc.options.keySneak.isPressed()) mc.player.setVelocity(initialVelocity.subtract(0, speed.get() * 5f, 0));
+                if (mc.options.keyJump.isPressed()) mc.player.setVelocity(initialVelocity.add(0, speed.get() * (this.verticalSpeedMatch.get() ? 10f : 5f), 0));
+                if (mc.options.keySneak.isPressed()) mc.player.setVelocity(initialVelocity.subtract(0, speed.get() * (this.verticalSpeedMatch.get() ? 10f : 5f), 0));
                 break;
             case Abilities:
                 if (mc.player.isSpectator()) return;
