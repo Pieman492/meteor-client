@@ -158,7 +158,7 @@ public class Flight extends Module {
                 you get when using vanilla fly*/
 
                 mc.player.abilities.flying = false;
-                mc.player.flyingSpeed = speed.get().floatValue() * (mc.player.isSprinting() ? 15f : !mc.player.isSneaking() ? 10f : this.negateSneakSlowness.get() ? 40f : 10f);
+                mc.player.flyingSpeed = speed.get().floatValue() * this.getSpeedMod();
 
                 mc.player.setVelocity(0, 0, 0);
                 Vec3d initialVelocity = mc.player.getVelocity();
@@ -201,6 +201,21 @@ public class Flight extends Module {
             } else {
                 lastY = currentY;
             }
+        }
+    }
+
+    private float getSpeedMod() {
+        boolean isSprinting = mc.player.isSprinting();
+        boolean isSneaking = mc.player.isSneaking();
+        boolean negateSneak = this.negateSneakSlowness.get();
+        if(isSprinting && isSneaking && negateSneak) {
+            return 48.0769f;
+        } else if (isSneaking && negateSneak) {
+            return 30.0769f;
+        } else if (isSprinting) {
+            return 15f;
+        } else {
+            return 10f;
         }
     }
 }
