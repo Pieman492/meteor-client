@@ -45,7 +45,7 @@ public class Flight extends Module {
     );
 
     private final Setting<Boolean> verticalSpeedMatch = sgGeneral.add(new BoolSetting.Builder()
-            .name("vert-speed-match")
+            .name("vertical-speed-match")
             .description("Make vertical speed equivalent to horizontal speed.")
             .defaultValue(false)
             .build()
